@@ -1,4 +1,13 @@
+import 'package:bmi_calculator/constants.dart';
+import 'package:bmi_calculator/gender_tiles.dart';
+import 'package:bmi_calculator/mycard.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+enum Gender {
+  male,
+  female,
+}
 
 class InputPage extends StatefulWidget {
   const InputPage({super.key});
@@ -8,6 +17,9 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+  Gender selectedGender = Gender.male;
+  int height = 180;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,43 +31,83 @@ class _InputPageState extends State<InputPage> {
             Expanded(
                 child: Row(
               children: [
-                Expanded(
-                  child: MyCard(const Color(0xff1d1e33)),
+                GenderTile(
+                  'MALE',
+                  FontAwesomeIcons.mars,
+                  selectedGender == Gender.male
+                      ? kActiveCardColor
+                      : kInactiveCardColor,
+                  () {
+                    setState(() {
+                      selectedGender = Gender.male;
+                    });
+                  },
                 ),
-                Expanded(
-                  child: MyCard(const Color(0xff1d1e33)),
-                ),
+                GenderTile(
+                  'FEMALE',
+                  FontAwesomeIcons.venus,
+                  selectedGender == Gender.female
+                      ? kActiveCardColor
+                      : kInactiveCardColor,
+                  () {
+                    setState(() {
+                      selectedGender = Gender.female;
+                    });
+                  },
+                )
               ],
             )),
-            Expanded(child: MyCard(const Color(0xff1d1e33))),
             Expanded(
-                child: Row(
-              children: [
-                Expanded(
-                  child: MyCard(const Color(0xff1d1e33)),
-                ),
-                Expanded(
-                  child: MyCard(const Color(0xff1d1e33)),
-                ),
-              ],
-            )),
+              child: MyCard(
+                  kInactiveCardColor,
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('HEIGHT'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              height.toString(),
+                              style: widgetLargeText,
+                            ),
+                            const Text('CM')
+                          ],
+                        ),
+                        SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            thumbColor: const Color(0xffEB1555),
+                            overlayColor: const Color(0x25eb1555),
+                            thumbShape: const RoundSliderThumbShape(
+                                enabledThumbRadius: 15),
+                            overlayShape: const RoundSliderOverlayShape(
+                                overlayRadius: 20),
+                          ),
+                          child: Slider(
+                            min: 120,
+                            max: 220,
+                            value: height.toDouble(),
+                            activeColor: Colors.white,
+                            inactiveColor: const Color(0xffBD8E98),
+                            onChanged: (double newValue) {
+                              setState(() {
+                                height = newValue.round();
+                              });
+                            },
+                          ),
+                        )
+                      ]),
+                  () {}),
+            ),
+            Container(
+              color: kBottomBackgroundColor,
+              width: double.infinity,
+              height: 80,
+              margin: const EdgeInsets.only(top: 10),
+            )
           ],
         ));
-  }
-}
-
-// ignore: must_be_immutable
-class MyCard extends StatelessWidget {
-  Color myColor;
-
-  MyCard(this.myColor, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-          color: myColor, borderRadius: BorderRadius.circular(10)),
-    );
   }
 }

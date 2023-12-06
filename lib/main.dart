@@ -21,7 +21,8 @@ class BMICalculator extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xff0A0E21),
         textTheme: const TextTheme(
             bodyMedium: TextStyle(
-          color: Colors.white,
+          color: Color.fromARGB(255, 250, 250, 250),
+          fontSize: 18.0,
         )),
       ),
       home: const InputPage(),
