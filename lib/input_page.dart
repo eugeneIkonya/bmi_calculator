@@ -1,6 +1,8 @@
 import 'package:bmi_calculator/constants.dart';
 import 'package:bmi_calculator/gender_tiles.dart';
 import 'package:bmi_calculator/mycard.dart';
+import 'package:bmi_calculator/results.dart';
+import 'package:bmi_calculator/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -19,6 +21,8 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   Gender selectedGender = Gender.male;
   int height = 180;
+  int weight = 68;
+  int age = 23;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +63,7 @@ class _InputPageState extends State<InputPage> {
             )),
             Expanded(
               child: MyCard(
-                  kInactiveCardColor,
+                  kActiveCardColor,
                   Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -71,7 +75,7 @@ class _InputPageState extends State<InputPage> {
                           children: [
                             Text(
                               height.toString(),
-                              style: widgetLargeText,
+                              style: kWidgetLargeText,
                             ),
                             const Text('CM')
                           ],
@@ -89,8 +93,8 @@ class _InputPageState extends State<InputPage> {
                             min: 120,
                             max: 220,
                             value: height.toDouble(),
-                            activeColor: Colors.white,
-                            inactiveColor: const Color(0xffBD8E98),
+                            activeColor: const Color(0xffEB1555),
+                            inactiveColor: Colors.white,
                             onChanged: (double newValue) {
                               setState(() {
                                 height = newValue.round();
@@ -101,11 +105,96 @@ class _InputPageState extends State<InputPage> {
                       ]),
                   () {}),
             ),
-            Container(
-              color: kBottomBackgroundColor,
-              width: double.infinity,
-              height: 80,
-              margin: const EdgeInsets.only(top: 10),
+            Expanded(
+                child: Row(
+              children: [
+                Expanded(
+                  child: MyCard(
+                      kActiveCardColor,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'WEIGHT',
+                            style: kWidgetMediumText,
+                          ),
+                          Text(
+                            weight.toString(),
+                            style: kWidgetLargeText,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              RoundedIconButton(() {
+                                setState(() {
+                                  weight--;
+                                });
+                              }, Icons.remove),
+                              RoundedIconButton(() {
+                                setState(() {
+                                  weight++;
+                                });
+                              }, Icons.add),
+                            ],
+                          )
+                        ],
+                      ),
+                      () => null),
+                ),
+                Expanded(
+                  child: MyCard(
+                      kActiveCardColor,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'AGE',
+                            style: kWidgetMediumText,
+                          ),
+                          Text(
+                            age.toString(),
+                            style: kWidgetLargeText,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              RoundedIconButton(() {
+                                setState(() {
+                                  age--;
+                                });
+                              }, Icons.remove),
+                              RoundedIconButton(() {
+                                setState(() {
+                                  age++;
+                                });
+                              }, Icons.add),
+                            ],
+                          )
+                        ],
+                      ),
+                      () => null),
+                ),
+              ],
+            )),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const ResultsPage();
+                  },
+                ));
+              },
+              child: Container(
+                color: kBottomBackgroundColor,
+                width: double.infinity,
+                height: 80,
+                padding: const EdgeInsets.all(25),
+                margin: const EdgeInsets.only(top: 10),
+                child: const Text(
+                  'CALCULATE',
+                  textAlign: TextAlign.center,
+                ),
+              ),
             )
           ],
         ));
