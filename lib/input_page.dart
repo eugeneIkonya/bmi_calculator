@@ -1,3 +1,4 @@
+import 'package:bmi_calculator/calculator.dart';
 import 'package:bmi_calculator/constants.dart';
 import 'package:bmi_calculator/gender_tiles.dart';
 import 'package:bmi_calculator/mycard.dart';
@@ -116,7 +117,7 @@ class _InputPageState extends State<InputPage> {
                         children: [
                           const Text(
                             'WEIGHT',
-                            style: kWidgetMediumText,
+                            style: kWidgetSmallText,
                           ),
                           Text(
                             weight.toString(),
@@ -149,7 +150,7 @@ class _InputPageState extends State<InputPage> {
                         children: [
                           const Text(
                             'AGE',
-                            style: kWidgetMediumText,
+                            style: kWidgetSmallText,
                           ),
                           Text(
                             age.toString(),
@@ -178,9 +179,14 @@ class _InputPageState extends State<InputPage> {
             )),
             GestureDetector(
               onTap: () {
+                Calculator myCalc = Calculator(height, weight);
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
-                    return const ResultsPage();
+                    return ResultsPage(
+                      bmiResult: myCalc.calculate(),
+                      resultText: myCalc.getResult(),
+                      interpretation: myCalc.getInterpretation(),
+                    );
                   },
                 ));
               },
